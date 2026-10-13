@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="纯前端、零依赖的 JSON 格式化与可视化查看器">
+  <title>JSON Viewer · 格式化与可视化查看器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== 顶栏 ===================== -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">{ }</span>
+      <div class="brand-text">
+        <h1>JSON Viewer</h1>
+        <p>纯前端 · 零依赖 · 格式化与可视化查看器</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btnSample" class="btn" type="button" title="加载一段结构丰富的示例 JSON">🎲 示例数据</button>
+      <button id="btnClear" class="btn btn-ghost" type="button" title="清空输入与视图">🗑️ 清空</button>
+    </div>
+  </header>
+
+  <!-- ===================== 主体：左右分栏 ===================== -->
+  <main class="app-main">
+
+    <!-- ---------- 左：输入区 ---------- -->
+    <section class="pane pane-input">
+      <div class="pane-head">
+        <span class="pane-title">📝 输入</span>
+        <div class="toolbar">
+          <button id="btnFormat2" class="btn" type="button" title="Ctrl + Enter">✨ 格式化 2 空格</button>
+          <button id="btnFormat4" class="btn" type="button" title="Ctrl + Shift + Enter">✨ 格式化 4 空格</button>
+          <button id="btnMinify" class="btn" type="button" title="Ctrl + Shift + M">📦 压缩成一行</button>
+          <button id="btnCopy" class="btn" type="button" title="Ctrl + Shift + C">📋 复制结果</button>
+          <button id="btnDownload" class="btn" type="button" title="Ctrl + Shift + S">⬇️ 下载 .json</button>
+        </div>
+      </div>
+
+      <textarea
+        id="input"
+        class="editor"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+        placeholder="在此粘贴 JSON，例如 {&quot;name&quot;: &quot;苏小晗&quot;} …… 输入后会自动解析">
+      </textarea>
+
+      <!-- 解析失败时的错误条 -->
+      <div id="parseError" class="error-bar hidden" role="alert"></div>
+
+      <!-- 统计栏 -->
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">键总数</span>
+          <span class="stat-value" id="statKeys">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">嵌套深度</span>
+          <span class="stat-value" id="statDepth">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">字符数</span>
+          <span class="stat-value" id="statChars">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">解析耗时</span>
+          <span class="stat-value" id="statTime">0 ms</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 右：树形视图 ---------- -->
+    <section class="pane pane-output">
+      <div class="pane-head">
+        <span class="pane-title">🌳 树形视图</span>
+        <div class="toolbar">
+          <div class="search-box">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input id="searchInput" class="search-input" type="text" spellcheck="false"
+                   placeholder="按 key / 值搜索…" title="Ctrl + F">
+            <span id="searchCount" class="search-count"></span>
+          </div>
+          <button id="btnExpandAll" class="btn" type="button" title="Ctrl + Shift + E">＋ 展开全部</button>
+          <button id="btnCollapseAll" class="btn" type="button" title="Ctrl + Shift + W">－ 折叠全部</button>
+        </div>
+      </div>
+
+      <div id="output" class="tree" role="tree" aria-label="JSON 树形视图"></div>
+    </section>
+
+  </main>
+
+  <!-- 轻提示 -->
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
